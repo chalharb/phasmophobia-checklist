@@ -21,6 +21,7 @@
     },
     "homepage": "https://dreamy-panini-4b9ce6.netlify.app/",
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.1",
         "normalize.css": "^8.0.0"
     },
     "devDependencies": {
