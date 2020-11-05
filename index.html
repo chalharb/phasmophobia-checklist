@@ -21,7 +21,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 </head>
-<body>
+<body class="dark-mode">
 <div class="container">
     <div class="heading">
         <h1>Phasmophobia CheckList</h1>
@@ -29,27 +29,14 @@
     <div class="aside">
         <div>
             <h2>Evidence</h2>
-            <ul id="evidence-checklist" class="list-style-none mbot-15">
-                <li><input type="checkbox" id="Fingerprints" name="Fingerprints" value="Fingerprints"><label
-                    for="Fingerprints">Fingerprints</label></li>
-            </ul>
-            <button class="btn full-width" id="reset-btn">Reset Filter</button>
+            <ul id="evidence-checklist" class="list-style-none mbot-15"></ul>
+            <button class="btn full-width mbot-15" id="reset-btn">Reset Filter</button>
+            <p><strong>Note:</strong> Click once to verify click twice to ignore</p>
         </div>
     </div>
     <div class="main">
         <h2>Possible Ghosts</h2>
-        <div id="ghosts">
-            <div class="card">
-                <p><strong>Ghost: </strong>Banshee</p>
-                <p><strong>Evidence: </strong></p>
-                <ul class="list-style-none">
-                    <li><i class="fas icon icon-green"></i><span>EMF Level 5</span></li>
-                    <li><i class="fas icon icon-green"></i><span>Fingerprints</span></li>
-                    <li><i class="fas icon icon-green"></i><span>Freezing Temperatures</span></li>
-                </ul>
-                <p><strong>Strengths:</strong> Only targets one player at a time</p>
-                <p><strong>Weaknesses:</strong> Hates the Crucifix</p></div>
-        </div>
+        <div id="ghosts"></div>
     </div>
 </div>
 </body>
