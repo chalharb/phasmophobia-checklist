@@ -11,15 +11,15 @@
     },
     "repository": {
         "type": "git",
-        "url": ""
+        "url": "https://github.com/chalharb/phasmophobia-checklist.git"
     },
     "keywords": [],
     "author": "Logan Harber",
     "license": "ISC",
     "bugs": {
-        "url": ""
+        "url": "https://github.com/chalharb/phasmophobia-checklist/issues"
     },
-    "homepage": "",
+    "homepage": "https://dreamy-panini-4b9ce6.netlify.app/",
     "dependencies": {
         "normalize.css": "^8.0.0"
     },
