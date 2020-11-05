@@ -1,6 +1,7 @@
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
     devtool: 'eval-cheap-module-source-map',
@@ -82,6 +83,35 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './index.html',
             inject: true
-        })
+        }),
+        new FaviconsWebpackPlugin({
+            // Your source logo
+            logo: './src/assets/favicon.png',
+            // The prefix for all image files (might be a folder or a name)
+            prefix: 'icons-[hash]/',
+            // Generate a cache file with control hashes and
+            // don't rebuild the favicons until those hashes change
+            persistentCache: true,
+            // Inject the html into the html-webpack-plugin
+            inject: true,
+            // favicon background color
+            background: '#fff',
+            // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
+            title: 'a',
+
+            // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
+            icons: {
+                android: true,
+                appleIcon: true,
+                appleStartup: true,
+                coast: false,
+                favicons: true,
+                firefox: true,
+                opengraph: false,
+                twitter: false,
+                yandex: false,
+                windows: false
+            }
+        }),
     ]
 };
