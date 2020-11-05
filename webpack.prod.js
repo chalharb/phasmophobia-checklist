@@ -1,14 +1,19 @@
 const path = require('path');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin'); //installed via npm
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+const buildPath = path.resolve(__dirname, 'dist');
 
 module.exports = {
-    devtool: 'eval-cheap-module-source-map',
+    devtool: 'source-map',
     entry: './src/index.js',
-    devServer: {
-        port: 8080,
-        contentBase: path.join(__dirname, "../dist")
+    output: {
+        filename: '[name].[hash:20].js',
+        path: buildPath
     },
     node: {
         fs: 'empty'
@@ -19,40 +24,42 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
+
                 options: {
                     presets: ['env']
                 }
             },
             {
-                test: /\.(scss|css)$/,
+                test: /\.(scss|css|sass)$/,
                 use: [
                     {
-                        // creates style nodes from JS strings
-                        loader: "style-loader",
+                        loader: MiniCssExtractPlugin.loader
+                    },
+                    {
+                        // translates CSS into CommonJS
+                        loader: 'css-loader',
                         options: {
                             sourceMap: true
                         }
                     },
                     {
-                        // translates CSS into CommonJS
-                        loader: "css-loader",
+                        // Runs compiled CSS through postcss for vendor prefixing
+                        loader: 'postcss-loader',
                         options: {
                             sourceMap: true
                         }
                     },
                     {
                         // compiles Sass to CSS
-                        loader: "sass-loader",
+                        loader: 'sass-loader',
                         options: {
                             outputStyle: 'expanded',
                             sourceMap: true,
                             sourceMapContents: true
                         }
                     }
-                    // Please note we are not running postcss here
                 ]
-            }
-            ,
+            },
             {
                 // Load all images as base64 encoding if they are smaller than 8192 bytes
                 test: /\.(png|jpg|gif)$/,
@@ -60,8 +67,7 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            // On development we want to see where the file is coming from, hence we preserve the [path]
-                            name: '[path][name].[ext]?hash=[hash:20]',
+                            name: '[name].[hash:20].[ext]',
                             limit: 8192
                         }
                     }
@@ -77,13 +83,15 @@ module.exports = {
                     }
                 ]
             }
-        ],
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './index.html',
-            inject: true
+            // Inject the js bundle at the end of the body of the given template
+            inject: 'body',
         }),
+        new CleanWebpackPlugin(buildPath),
         new FaviconsWebpackPlugin({
             // Your source logo
             logo: './src/assets/favicon.png',
@@ -97,7 +105,7 @@ module.exports = {
             // favicon background color
             background: '#fff',
             // favicon app title (see https://github.com/haydenbleasel/favicons#usage)
-            title: 'a',
+            title: 'PhasmophobiaChecklist',
 
             // which icons should be generated (see https://github.com/haydenbleasel/favicons#usage)
             icons: {
@@ -113,5 +121,21 @@ module.exports = {
                 windows: false
             }
         }),
+        new MiniCssExtractPlugin({
+            filename: 'styles.[contenthash].css'
+        }),
+        new OptimizeCssAssetsPlugin({
+            cssProcessor: require('cssnano'),
+            cssProcessorOptions: {
+                map: {
+                    inline: false,
+                },
+                discardComments: {
+                    removeAll: true
+                },
+                discardUnused: false
+            },
+            canPrint: true
+        })
     ]
 };

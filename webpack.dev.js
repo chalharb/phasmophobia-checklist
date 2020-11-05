@@ -1,19 +1,14 @@
 const path = require('path');
 
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin'); //installed via npm
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-
-const buildPath = path.resolve(__dirname, '../dist');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'eval-cheap-module-source-map',
     entry: './src/index.js',
-    output: {
-        filename: '[name].[hash:20].js',
-        path: buildPath
+    devServer: {
+        port: 8080,
+        contentBase: path.join(__dirname, "dist")
     },
     node: {
         fs: 'empty'
@@ -24,42 +19,40 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-
                 options: {
                     presets: ['env']
                 }
             },
             {
-                test: /\.(scss|css|sass)$/,
+                test: /\.(scss|css)$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader
-                    },
-                    {
-                        // translates CSS into CommonJS
-                        loader: 'css-loader',
+                        // creates style nodes from JS strings
+                        loader: "style-loader",
                         options: {
                             sourceMap: true
                         }
                     },
                     {
-                        // Runs compiled CSS through postcss for vendor prefixing
-                        loader: 'postcss-loader',
+                        // translates CSS into CommonJS
+                        loader: "css-loader",
                         options: {
                             sourceMap: true
                         }
                     },
                     {
                         // compiles Sass to CSS
-                        loader: 'sass-loader',
+                        loader: "sass-loader",
                         options: {
                             outputStyle: 'expanded',
                             sourceMap: true,
                             sourceMapContents: true
                         }
                     }
+                    // Please note we are not running postcss here
                 ]
-            },
+            }
+            ,
             {
                 // Load all images as base64 encoding if they are smaller than 8192 bytes
                 test: /\.(png|jpg|gif)$/,
@@ -67,7 +60,8 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            name: '[name].[hash:20].[ext]',
+                            // On development we want to see where the file is coming from, hence we preserve the [path]
+                            name: '[path][name].[ext]?hash=[hash:20]',
                             limit: 8192
                         }
                     }
@@ -83,15 +77,13 @@ module.exports = {
                     }
                 ]
             }
-        ]
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './index.html',
-            // Inject the js bundle at the end of the body of the given template
-            inject: 'body',
+            inject: true
         }),
-        new CleanWebpackPlugin(buildPath),
         new FaviconsWebpackPlugin({
             // Your source logo
             logo: './src/assets/favicon.png',
@@ -121,21 +113,5 @@ module.exports = {
                 windows: false
             }
         }),
-        new MiniCssExtractPlugin({
-            filename: 'styles.[contenthash].css'
-        }),
-        new OptimizeCssAssetsPlugin({
-            cssProcessor: require('cssnano'),
-            cssProcessorOptions: {
-                map: {
-                    inline: false,
-                },
-                discardComments: {
-                    removeAll: true
-                },
-                discardUnused: false
-            },
-            canPrint: true
-        })
     ]
 };
