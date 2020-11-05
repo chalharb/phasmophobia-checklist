@@ -1,11 +1,17 @@
 @import "reset";
 @import "variables";
 @import "util";
-@import "grid.scss";
-@import "button.scss";
-@import "_card.scss";
-@import "form.scss";
+@import "grid";
+@import "icon";
+@import "button";
+@import "card";
+@import "form";
 
 body {
     font-family: $fontFamily
+}
+
+.dark-mode {
+    background: $darkgray;
+    color: $white;
 }
