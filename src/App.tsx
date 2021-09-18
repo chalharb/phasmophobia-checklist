@@ -1,9 +1,29 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
+import Filter from './features/Filter'
+import { useGlobalState } from './state';
+import {GhostList} from './features/Ghost/'
 
-function App() {
+import {
+  Container,
+  Grid,
+  Typography,
+} from '@mui/material'
+
+const App: React.FC = () => {
+  const [ghosts] = useGlobalState('ghosts');
+
   return (
-    <h1>Hello World</h1>
+    <Container maxWidth="xl">
+      <Typography variant="h2" component="h1">Phasmophobia Checklist</Typography>
+      <Grid container spacing={2}>
+        <Grid item sm={12} md={3}>
+          <Filter />
+        </Grid>
+        <Grid item sm={12} md={9}>
+          <GhostList data={ghosts} />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
