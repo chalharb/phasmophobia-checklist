@@ -1,8 +1,5 @@
-import React from 'react'
-
-import {
-  GhostList as GhostListProps
-} from '../../models'
+import React, { useContext } from 'react'
+import GlobalStateProvider, { GlobalContext } from '../../state'
 
 import {
   GhostCard
@@ -12,14 +9,16 @@ import {
   Typography,
 } from '@mui/material'
 
-const GhostList: React.FC<GhostListProps> = ({ data }) => {
+const GhostList: React.FC = () => {
+  const { ghosts } = useContext(GlobalContext);
+
   return (
-    <>
+    <GlobalStateProvider>
       <Typography variant="h4" component="h2" mb={2}>Possible Ghosts</Typography>
-      {data.map((ghost) => (
+      {ghosts.map((ghost) => (
         <GhostCard name={ghost.name} strength={ghost.strength} weakness={ghost.weakness} evidence={ghost.evidence} />
       ))}
-    </>
+    </GlobalStateProvider>
   );
 };
 

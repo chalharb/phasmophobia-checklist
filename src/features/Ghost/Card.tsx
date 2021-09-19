@@ -6,10 +6,15 @@ import {
 
 import {
     Card,
-    CardContent,
-    Grid,
     Typography,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
 } from '@mui/material'
+
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import CheckIcon from '@mui/icons-material/Check';
 
 const GhostCard: React.FC<Ghost> = ({
     name,
@@ -18,28 +23,21 @@ const GhostCard: React.FC<Ghost> = ({
     evidence,
 }) => {
     return (
-        <Card sx={{ mb: 1 }}>
-            <CardContent sx={{ mb: 0, pb: 0 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <Typography variant="h5" component="h3" mb={2}>{name}</Typography>
-                        <Typography variant="h6" component="h4" mb={2}>Evidence</Typography>
-                        <ul>
-                            {evidence.map((evidence) => (<li>{evidence}</li>))}
-                        </ul>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Typography variant="h6" component="h4" mb={2}>Strength</Typography>
-                        <ul>
-                            <li>{strength}</li>
-                        </ul>
-                        <Typography variant="h6" component="h4" mb={2}>Weakness</Typography>
-                        <ul>
-                            <li>{weakness}</li>
-                        </ul>
-                    </Grid>
-                </Grid>
-            </CardContent>
+        <Card sx={{ mb: 1, p: 2 }}>
+            <Typography variant="h5" component="h3" mb={2}>{name}</Typography>
+            <Typography variant="h6" component="h4" mb={0}>Evidence</Typography>
+            <List>
+            {evidence.map((evidence) => (
+                <ListItem sx={{p: 0}}>
+                    <ListItemIcon sx={{minWidth: 35}}>
+                        <CheckIcon />
+                    </ListItemIcon>
+                    <ListItemText>{evidence}</ListItemText>
+                </ListItem>
+            ))}
+            </List>
+            <Typography mb={0}><strong>Strength:</strong> {strength}</Typography>
+            <Typography mb={0}><strong>Weakness:</strong> {weakness}</Typography>
         </Card>
     );
 };

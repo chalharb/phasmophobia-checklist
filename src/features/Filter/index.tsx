@@ -1,5 +1,4 @@
 import React from 'react'
-import { useGlobalState } from '../../state';
 import { Evidence } from '../../models'
 import {
   Button,
@@ -12,9 +11,6 @@ import {
 } from '@mui/material'
 
 const Filter: React.FC = () => {
-  const [filters, setFilters] = useGlobalState('filters')
-  let localFilters = ['']
-
   const handleFilterUpdate = (event:any) => {
     console.log(event.target.checked)
   }
